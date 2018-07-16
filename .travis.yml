@@ -20,7 +20,7 @@ install:
   - echo "install nothing!" # put your normal pre-testing installs here
 
 script:
-  - gradle assemble
+  - ./gradlew assemble
 
 deploy:
   skip_cleanup: true
