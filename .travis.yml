@@ -25,12 +25,15 @@ script:
 deploy:
   skip_cleanup: true
   # deploy push to master to the blah environment
-  provider: script
-  script: bash travis-buildit
-  on:
-    branch: master
+  - provider: script
+    script: bash travis-buildit
+    on:
+      branch: master
   # deploy push to master to the blah environment
-
+  - provider: script
+    script: bash travis-buildit
+    on:
+      branch: develop
 
 # after_success:
 #   - docker --version  # document the version travis is using
