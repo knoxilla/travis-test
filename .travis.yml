@@ -20,7 +20,7 @@ install:
   - echo "install nothing!" # put your normal pre-testing installs here
 
 script:
-  - gradlew assemble
+  - gradle assemble
 
 deploy:
   -  provider: script
