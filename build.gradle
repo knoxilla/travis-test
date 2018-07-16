@@ -11,6 +11,12 @@ buildscript {
     }
 }
 
+// for docker build and compose
+task('appVersion') << {
+    println project.version
+}
+
+version "0.1"
 version "0.1"
 group "example.grails"
 

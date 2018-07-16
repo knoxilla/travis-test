@@ -1,0 +1,30 @@
+#!/bin/bash
+
+REGISTRY=803057437978.dkr.ecr.us-east-1.amazonaws.com
+REPO=knoxilla/travis-test
+GRAILSENV=${1-production}
+VERSION=$(gradle -q appVersion)
+DOCKERFILE="docker/Dockerfile"
+
+docker --version  # document the version travis is using
+#pip install --user awscli # install aws cli w/o sudo
+export PATH=$PATH:$HOME/.local/bin # put aws in the path
+eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+
+cp ./build/libs/initial-${VERSION}.war .
+
+TAG=${2-$VERSION}
+
+docker build --compress \
+    --build-arg GIT_COMMIT=$(git rev-parse --short HEAD) \
+    --build-arg GIT_REPOPATH=$(git config --get remote.origin.url | cut -d: -f2- | cut -d. -f1) \
+    --build-arg GIT_REPOHOST=$(git config --get remote.origin.url | cut -d@ -f2 | cut -d: -f1) \
+    --build-arg appVersion=${VERSION} \
+    --build-arg grailsEnv=${GRAILSENV} \
+    -t ${REGISTRY}/${REPO}:${TAG} \
+    -f ${DOCKERFILE} \
+    .
+
+docker push ${REGISTRY}/${REPO}:${TAG}
+
+rm ./initial-${VERSION}.war
