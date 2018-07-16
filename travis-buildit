@@ -7,6 +7,8 @@ VERSION=$(gradle -q appVersion)
 DOCKERFILE="docker/Dockerfile"
 
 echo $PWD
+echo $PWD
+echo $PWD
 
 docker --version  # document the version travis is using
 pip install --user awscli # install aws cli w/o sudo
