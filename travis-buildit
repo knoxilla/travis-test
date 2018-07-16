@@ -1,7 +1,12 @@
 #!/bin/bash
 
 REGISTRY=803057437978.dkr.ecr.us-east-1.amazonaws.com
-REPO=knoxilla/travis-test
+
+REPOOWNER=knoxilla
+REPONAME=travis-test
+
+REPO=${REPOOWNER}/${REPONAME}
+
 GRAILSENV=${1-production}
 VERSION=$(gradle -q appVersion)
 DOCKERFILE="docker/Dockerfile"
@@ -9,19 +14,19 @@ DOCKERFILE="docker/Dockerfile"
 echo $PWD
 echo $PWD
 echo $PWD
+env
 
 docker --version  # document the version travis is using
 pip install --user awscli # install aws cli w/o sudo
 export PATH=$PATH:$HOME/.local/bin # put aws in the path
-echo "Login to AWS ECR..."
+echo "Logging in to AWS ECR..."
 eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
-echo "Logged in to aWS ECR!"
 
 ls -la .
 
 ls -la ./build/libs/
 
-cp ./build/libs/initial-${VERSION}.war .
+cp ./build/libs/${REPONAME}-${VERSION}.war .
 
 TAG=${2-$VERSION}
 
@@ -37,4 +42,4 @@ docker build --compress \
 
 docker push ${REGISTRY}/${REPO}:${TAG}
 
-rm ./initial-${VERSION}.war
+rm ./${REPONAME}-${VERSION}.war

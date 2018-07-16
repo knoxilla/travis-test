@@ -1,4 +1,24 @@
-sudo: true
+sudo: true # needed to start docker daemon
+
+services:
+  - docker # required, but travis uses older version of docker :(
+
+language: groovy
+
+jdk:
+  - oraclejdk8
+
+notifications:
+  # email: false
+  email:
+    # defauls are committer and author if they have repo rights
+    recipients:
+      - foobar@umich.edu
+      - talktothehand@umich.edu
+    on_success: never  # default: change
+    on_failure: always # default: always
+    # see also
+    # https://docs.travis-ci.com/user/notifications#Configuring-Slack-notifications
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -8,19 +28,11 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-language: groovy
-
-jdk:
-  - oraclejdk8
-
-services:
-  - docker # required, but travis uses older version of docker :(
-
 install:
   - echo "install nothing!" # put your normal pre-testing installs here
 
 script:
-  - ./gradlew assemble
+  - ./gradlew assemble # put your normal testing stuff here, return non-zero on failure
 
 deploy:
   skip_cleanup: true
@@ -28,6 +40,8 @@ deploy:
   script: bash travis-buildit
   on:
     branch: master
+
+# using deploy > script b/c we have a bit more stuff going on than after_success will allow...
 
 # after_success:
 #   - docker --version  # document the version travis is using

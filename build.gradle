@@ -91,3 +91,7 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+
+// String env = System.getProperty('grails.env') ?: 'prod'
+// war.baseName "${rootProject.name}-${env}"
+// jar.baseName "${rootProject.name}-${env}"
