@@ -29,7 +29,7 @@ RUN mkdir -p /app/config
 VOLUME ["/app/config"]
 
 WORKDIR /app
-COPY initial-$appVersion.war application.jar
+COPY application-$appVersion.war application.jar
 COPY docker-entrypoint.sh docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 

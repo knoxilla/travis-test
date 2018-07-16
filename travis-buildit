@@ -11,10 +11,7 @@ GRAILSENV=${1-production}
 VERSION=$(gradle -q appVersion)
 DOCKERFILE="docker/Dockerfile"
 
-echo $PWD
-echo $PWD
-echo $PWD
-env
+env | sort
 
 docker --version  # document the version travis is using
 pip install --user awscli # install aws cli w/o sudo
@@ -22,11 +19,7 @@ export PATH=$PATH:$HOME/.local/bin # put aws in the path
 echo "Logging in to AWS ECR..."
 eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
 
-ls -la .
-
-ls -la ./build/libs/
-
-cp ./build/libs/${REPONAME}-${VERSION}.war .
+cp ./build/libs/${REPONAME}-${VERSION}.war ./application-${VERSION}.war
 
 TAG=${2-$VERSION}
 
@@ -42,4 +35,4 @@ docker build --compress \
 
 docker push ${REGISTRY}/${REPO}:${TAG}
 
-rm ./${REPONAME}-${VERSION}.war
+rm ./application-${VERSION}.war
