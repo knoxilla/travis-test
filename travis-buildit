@@ -13,9 +13,13 @@ echo $PWD
 docker --version  # document the version travis is using
 pip install --user awscli # install aws cli w/o sudo
 export PATH=$PATH:$HOME/.local/bin # put aws in the path
+echo "Login to AWS ECR..."
 eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+echo "Logged in to aWS ECR!"
 
-ls -la .build/libs/
+ls -la .
+
+ls -la ./build/libs/
 
 cp ./build/libs/initial-${VERSION}.war .
 
