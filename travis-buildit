@@ -17,6 +17,13 @@ DOCKERFILE="docker/Dockerfile"
 
 env | sort
 
+echo "selecting python..."
+pyenv global 3.6
+python --version
+python3 --version
+pip --version
+pip3 --version
+
 echo "awscli..."
 echo ${AWS_ACCESS_KEY_ID}
 echo ${AWS_SECRET_ACCESS_KEY}
