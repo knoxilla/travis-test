@@ -4,3 +4,5 @@
 
 You know, for testing travis!
 
+We meet again.  New ecr-pusher credentials into Travis environment.
+
