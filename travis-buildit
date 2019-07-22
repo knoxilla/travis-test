@@ -1,5 +1,9 @@
 #!/bin/bash
 
+EXIT_STATUS=0
+
+echo "deploying..."
+
 REGISTRY=803057437978.dkr.ecr.us-east-1.amazonaws.com
 
 REPOOWNER=knoxilla
@@ -13,11 +17,15 @@ DOCKERFILE="docker/Dockerfile"
 
 env | sort
 
+echo "awscli..."
+
 docker --version  # document the version travis is using
 pip install --user awscli # install aws cli w/o sudo
 export PATH=$PATH:$HOME/.local/bin # put aws in the path
 echo "Logging in to AWS ECR..."
 eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+
+echo "copy war..."
 
 cp ./build/libs/${REPONAME}-${VERSION}.war ./application-${VERSION}.war
 
@@ -36,3 +44,6 @@ docker build --compress \
 docker push ${REGISTRY}/${REPO}:${TAG}
 
 rm ./application-${VERSION}.war
+
+exit $EXIT_STATUS
+
