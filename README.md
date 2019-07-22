@@ -4,4 +4,3 @@
 
 You know, for testing travis!
 
-And the thing just keeps on going...
